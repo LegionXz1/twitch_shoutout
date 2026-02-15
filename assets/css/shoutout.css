@@ -162,3 +162,29 @@ html, body {
     width: 120px;
     filter: grayscale(100%) contrast(120%);
 }
+/* ===============================
+   DETAIL ICON / IMAGE (BOTTOM RIGHT)
+   =============================== */
+#details-container {
+    position: relative; /* จำเป็น */
+}
+
+#details-container::after {
+    content: '';
+    position: absolute;
+    right: 14px;
+    bottom: 12px;
+
+    width: 54px;
+    height: 54px;
+
+    background-image: url('assets/images/Love.png'); /* ← เปลี่ยน path */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    opacity: 0.75;
+    filter: drop-shadow(0 0 6px rgba(0,0,0,0.8));
+
+    pointer-events: none;
+}
