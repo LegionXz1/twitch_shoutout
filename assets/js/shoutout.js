@@ -35,7 +35,9 @@ const detailsContainer = document.getElementById("details-container");
    HELPER
    =============================== */
 function hideAll() {
-    container.style.display = "none";
+    if (container) container.style.display = "none";
+    if (textContainer) textContainer.style.display = "none";
+    if (detailsContainer) detailsContainer.style.display = "none";
 
     if (clipVideo) {
         clipVideo.pause();
@@ -43,7 +45,6 @@ function hideAll() {
         clipVideo.load();
     }
 }
-
 function showContainer() {
     container.style.display = "block";
 }
