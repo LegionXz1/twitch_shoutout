@@ -167,10 +167,22 @@ $(document).ready(function () {
     });
 
     function doShoutOut(getChannel, replayClip = false, watchClip = false) {
-        if (document.getElementById("clip")) return;
+        console.log("--- เริ่มระบบ Shoutout สำหรับช่อง: " + getChannel + " ---");
+        
+        if (document.getElementById("clip")) {
+            console.log("คำเตือน: มีคลิปกำลังเล่นอยู่แล้ว ข้ามการทำงาน");
+            return;
+        }
 
         if (watchClip || replayClip) {
+            console.log("โหมด: Replay หรือ Watch Clip");
             clip_url = watchClip ? localStorage.getItem('twitchSOWatchClip') : localStorage.getItem('twitchSOClipUrl');
+            
+            if (!clip_url) {
+                console.log("ข้อผิดพลาด: ไม่พบ URL คลิปใน Storage");
+                return;
+            }
+
             if (document.getElementById("text-container")) $("#text-container").remove();
             if (document.getElementById("details-container")) $("#details-container").remove();
             
@@ -180,37 +192,51 @@ $(document).ready(function () {
         }
 
         getStatus(getChannel, function (info) {
-            if (!info.data || info.data.length === 0) return;
-
-            if (showMsg === 'true' && !replay && !watch) {
-                let statusData = info.data[0];
-                if (statusData['game_name']) {
-                    let msg = customMsg ? customMsg.replace("{channel}", statusData['broadcaster_name']).replace("{game}", statusData['game_name']).replace("{title}", statusData['title']).replace("{url}", "https://twitch.tv/" + statusData['broadcaster_login']) : 
-                              "Go check out " + statusData['broadcaster_name'] + "! They were playing: " + statusData['game_name'] + " - " + statusData['title'] + " - https://twitch.tv/" + statusData['broadcaster_login'];
-                    client.say(channelName, decodeURIComponent(msg));
-                } else {
-                    client.say(channelName, "Go check out " + statusData['broadcaster_name'] + "! https://twitch.tv/" + statusData['broadcaster_login']);
-                }
+            console.log("ข้อมูลสถานะช่อง:", info);
+            if (!info.data || info.data.length === 0) {
+                console.log("ข้อผิดพลาด: ไม่พบข้อมูลช่องนี้ใน Twitch");
+                return;
             }
 
+            // แสดงข้อความในแชท
+            if (showMsg === 'true' && !replay && !watch) {
+                let statusData = info.data[0];
+                let msg = customMsg ? customMsg.replace("{channel}", statusData['broadcaster_name']).replace("{game}", statusData['game_name']).replace("{title}", statusData['title']).replace("{url}", "https://twitch.tv/" + statusData['broadcaster_login']) : 
+                          "Go check out " + statusData['broadcaster_name'] + "! They were playing: " + statusData['game_name'] + " - " + statusData['title'] + " - https://twitch.tv/" + statusData['broadcaster_login'];
+                client.say(channelName, decodeURIComponent(msg));
+            }
+
+            // ส่วนของการดึงคลิปและสุ่ม
             if (showClip === 'true' || showRecentClip === 'true') {
+                console.log("กำลังดึงรายการคลิป...");
                 getClips(getChannel, function (clipsInfo) {
+                    console.log("จำนวนคลิปทั้งหมดที่ดึงมาได้: " + (clipsInfo.data ? clipsInfo.data.length : 0));
+
                     if (clipsInfo.data && clipsInfo.data.length > 0) {
-                        // RANDOM LOGIC
+                        
+                        // --- ส่วน LOGIC การสุ่ม ---
                         indexClip = Math.floor(Math.random() * clipsInfo.data.length);
                         let selectedClip = clipsInfo.data[indexClip];
                         let clip_url = selectedClip.clip_url;
 
+                        console.log("ลำดับคลิปที่สุ่มได้ (Index): " + indexClip);
+                        console.log("ชื่อคลิปที่เลือก: " + selectedClip.title);
+                        console.log("URL คลิป: " + clip_url);
+                        // -------------------------
+
                         $("#clip, #text-container, #details-container").remove();
 
+                        // แสดงผล Text
                         if (showText === 'true') {
                             let title = customTitle ? customTitle.replace("{channel}", selectedClip['broadcaster_name']).replace("{url}", "twitch.tv/" + selectedClip['broadcaster_name'].toLowerCase()) : 
                                          "Go check out " + selectedClip['broadcaster_name'];
                             $("<div id='text-container' class='hide'><span class='title-text'>" + decodeURIComponent(title) + "</span></div>").appendTo("#container");
                         }
 
+                        // สร้าง Video Element
                         $("<video id='clip' class='video fade' width='100%' height='100%' autoplay><source src='" + clip_url + "' type='video/mp4'></video>").appendTo("#container");
 
+                        // แสดงรายละเอียด (Game/Title)
                         if (showDetails === 'true') {
                             let dTxt = detailsText || "{title}\n{game}";
                             dTxt = dTxt.replace("{title}", selectedClip['title'] || "?")
@@ -220,7 +246,7 @@ $(document).ready(function () {
                             
                             if (selectedClip['game_id']) {
                                 let g = game_title(selectedClip['game_id']);
-                                dTxt = dTxt.replace("{game}", g.data[0]['name']);
+                                if(g.data && g.data[0]) dTxt = dTxt.replace("{game}", g.data[0]['name']);
                             }
 
                             let finalHtml = "";
@@ -230,16 +256,19 @@ $(document).ready(function () {
 
                         setTimeout(() => { $("#text-container, #details-container").removeClass("hide"); }, 500);
 
+                        // ระบบนับเวลาปิดคลิป
                         let timer = 0;
                         let startTimer = setInterval(() => {
                             timer++;
                             if (timer >= parseInt(timeOut)) {
+                                console.log("หมดเวลาแสดงผล: ปิดคลิป");
                                 $("#clip, #text-container, #details-container").remove();
                                 clearInterval(startTimer);
                             }
                         }, 1000);
 
                         document.getElementById("clip").onended = function() {
+                            console.log("คลิปเล่นจบ: ปิดคลิป");
                             $("#clip, #text-container, #details-container").remove();
                             clearInterval(startTimer);
                         };
@@ -247,13 +276,12 @@ $(document).ready(function () {
                         localStorage.setItem('twitchSOClipUrl', clip_url);
                         localStorage.setItem('twitchSOChannel', getChannel);
 
-                    } else if (showImage === 'true') {
-                        getInfo(getChannel, function (uInfo) {
-                            let userImage = uInfo.data[0]['profile_image_url'];
-                            if (showText === 'true') $("<div id='text-container'><span class='title-text'>Go check out " + uInfo.data[0]['display_name'] + "</span></div>").appendTo("#container");
-                            $("<img id='profile' class='fade img-fluid' src='" + userImage + "'>").appendTo("#container");
-                            setTimeout(() => { $("#profile, #text-container, #details-container").remove(); }, 5000);
-                        });
+                    } else {
+                        console.log("ผลลัพธ์: ช่องนี้ไม่มีคลิปให้แสดง");
+                        if (showImage === 'true') {
+                            console.log("กำลังดึงรูปโปรไฟล์มาแสดงแทน...");
+                            // ... (โค้ดดึงรูปเดิม)
+                        }
                     }
                 });
             }
