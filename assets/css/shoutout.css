@@ -68,17 +68,16 @@ html, body {
    DETAILS PANEL (IF ENABLED)
    =============================== */
 #details-container {
-    position: absolute;
-    bottom: 5%;
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative;
+    margin: 22px auto 0;     /* ระยะห่างใต้คลิป */
+    width: 72%;
+    max-width: 1120px;
 
     background: rgba(5,5,5,0.92);
     border-left: 3px solid rgba(255,255,255,0.25);
     border-radius: 4px;
 
     padding: 16px 24px;
-    min-width: 55%;
 
     box-shadow:
         0 0 35px rgba(0,0,0,0.95),
