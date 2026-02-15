@@ -170,9 +170,10 @@ video {
     max-height: 65vh;
     border-radius: 40px;
     border: 12px solid #ffffff;
-    box-shadow: 
-        0 15px 50px rgba(0,0,0,0.4),
-        0 0 30px rgba(255, 255, 255, 0.6);
+    box-shadow: none !important;  /* ลบ shadow ที่อาจทำให้ glow แรงขึ้น */
+    filter: brightness(1.05) contrast(1.1) saturate(1.05) !important;  /* ทำให้สี crisp ลด bloom */
+    -webkit-filter: brightness(1.05) contrast(1.1) saturate(1.05) !important;
+    background: #000000;  /* พื้นหลังดำแน่นอน ป้องกัน transparent รั่ว */
     margin: 18vw auto 18vw;
     display: block;
 }
