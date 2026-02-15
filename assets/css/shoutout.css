@@ -1,10 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Basic');
+/* Kawaii Fried Chicken Theme - ไก่ทอดน่ารัก สีสันสดใส 🍗✨ */
+
+@import url('https://fonts.googleapis.com/css2?family=Chewy&family=Comic+Neue:wght@400;700&family=Bubblegum+Sans&display=swap');
 
 html, body {
     overflow: hidden;
     background: transparent;
     padding: 0;
     margin: 0;
+    font-family: 'Chewy', 'Comic Neue', 'Bubblegum Sans', cursive, sans-serif;
 }
 
 .hide {
@@ -20,88 +23,153 @@ html, body {
     text-align: center;
 }
 
+/* Container หลัก */
 #container {
     display: block;
-    padding: 4px;
-    margin: 4px;
-    text-align: center;
-}
-
-video {
     width: 100%;
-    height: auto;
-    max-height: 100%;
-    border-radius: 10px;
-    z-index: -1;
+    height: 100vh;
+    position: relative;
 }
 
-#text-container {
-    width: 100%;
-    position: absolute;
-    top: 10vw;
-}
-
-.title-text {
-    font-family: Basic, Helvetica, sans-serif;
-    font-weight: bold;
-    font-size: 5vw;
-    word-wrap: break-word;
-    color: #fff;
-    text-align: center;
-    text-shadow: 2px 2px #000;
-}
-
-/* Profile image */
-#profile {
-    border-radius: 100%;
-}
-
+/* Shoutout box หลัก - พื้นหลังสีทองกรอบไก่ทอด */
+#text-container,
 #details-container {
     position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+/* พื้นหลังหลักของ shoutout - เหลืองทองกรอบไก่ */
+#text-container {
+    top: 10vw;
+    width: 90%;
+    max-width: 1200px;
+    background: linear-gradient(135deg, #ffe066, #ffcc33, #ff9900);
+    border-radius: 50px;
+    border: 14px solid #ff6699;          /* ขอบชมพูสด แก้มไก่ */
+    box-shadow: 
+        0 0 50px rgba(255, 102, 153, 0.7),
+        inset 0 0 30px rgba(255, 255, 255, 0.6);
+    padding: 40px 50px;
+    animation: kawaiiBounce 1.4s ease-out forwards;
+}
+
+/* Animation เด้งน่ารัก ๆ */
+@keyframes kawaiiBounce {
+    0%   { transform: translateX(-50%) scale(0.4) rotate(-8deg); opacity: 0; }
+    60%  { transform: translateX(-50%) scale(1.12) rotate(4deg); opacity: 1; }
+    100% { transform: translateX(-50%) scale(1) rotate(0deg); }
+}
+
+/* ข้อความหลัก (ชื่อช่อง) */
+.title-text {
+    font-family: 'Chewy', cursive;
+    font-size: 7vw;
+    color: #ff3366;                       /* ชมพูสด แก้มไก่แดง */
+    text-shadow: 
+        5px 5px 0 #ffffff,
+        10px 10px 0 #ffcc00;
+    margin: 0;
+    padding: 10px 0;
+    line-height: 1.1;
+}
+
+/* รายละเอียดอื่น ๆ (game, viewers, etc.) */
+#details-container {
     top: 36vw;
-    background: #00000090;
-    padding: 12px 24px 12px 24px;
-    margin-right: 24px;
-    border-radius: 0px 24px 24px 0px;
+    background: rgba(255, 204, 51, 0.85);  /* เหลืองอ่อนแบบแป้งทอด */
+    border: 8px solid #ff6699;
+    border-radius: 40px;
+    padding: 20px 40px;
+    margin: 0 auto;
     width: auto;
-    animation: fadeout 10s forwards;
+    max-width: 90%;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    animation: fadeout 12s forwards;
 }
 
 #details-container .details-text {
-    font-family: Basic, Helvetica, sans-serif;
-    font-weight: bold;
-    word-wrap: break-word;
-    color: #fff;
-    text-align: left;
-    text-shadow: 2px 2px #000;
+    color: #ffffff;
+    text-shadow: 2px 2px 0 #ff3366;
+    text-align: center;
 }
 
 #details-container .details-text.item-0 {
-    font-size: 3vw;
+    font-size: 4vw;
     font-weight: bold;
+    color: #ffffff;
 }
 
-#details-container .details-text.item-1 {
-    font-size: 2.5vw;
-    font-weight: normal;
-}
-
-#details-container .details-text.item-2 {
-    font-size: 2vw;
-    font-weight: normal;
-}
-
+#details-container .details-text.item-1,
+#details-container .details-text.item-2,
 #details-container .details-text.item-3 {
-    font-size: 1.5vw;
+    font-size: 2.8vw;
     font-weight: normal;
+    margin: 8px 0;
 }
 
+/* คลิปวิดีโอ */
+video {
+    width: 80%;
+    max-width: 960px;
+    height: auto;
+    max-height: 54vh;
+    border-radius: 40px;
+    border: 12px solid #ffffff;          /* ขอบขาวแบบขนมปังกรอบ */
+    box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+    margin: 30px auto 20px;
+    display: block;
+}
+
+/* รูปโปรไฟล์ (ถ้ามี) */
+#profile {
+    border-radius: 50%;
+    border: 10px solid #ffcc99;          /* สีครีมแบบแป้งทอด */
+    box-shadow: 0 0 30px #ff6699;
+    width: 220px;
+    height: 220px;
+    object-fit: cover;
+    margin: 20px auto;
+}
+
+/* เพิ่มลูกเล่นน่ารัก - emoji ไก่ลอย ๆ */
+#text-container::before {
+    content: "🍗🍟🔥💕🍗";
+    position: absolute;
+    top: -70px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 6rem;
+    opacity: 0.9;
+    pointer-events: none;
+    animation: floatEmoji 7s infinite ease-in-out;
+}
+
+@keyframes floatEmoji {
+    0%, 100%   { transform: translateX(-50%) translateY(0); }
+    50%        { transform: translateX(-50%) translateY(-25px); }
+}
+
+/* พื้นหลังจุด ๆ เบา ๆ (เหมือนงาชิกเก้น) */
+body::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: 
+        radial-gradient(circle at 15% 20%, rgba(255,255,255,0.4) 8%, transparent 20%),
+        radial-gradient(circle at 85% 75%, rgba(255,204,51,0.3) 10%, transparent 25%);
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* Animation fade out เดิมยังใช้ได้ */
 @keyframes fadeout {
-    0%   {opacity: 1;}
-    90%  {opacity: 1;}
-    100% {opacity: 0;}
+    0%   { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { opacity: 0; }
 }
 
 @keyframes slide {
-    100% {left: 0;}
+    100% { left: 0; }
 }
