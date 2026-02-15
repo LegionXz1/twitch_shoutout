@@ -1,5 +1,8 @@
 /* =========================================================
-   SHOUTOUT.JS – FIX indexClip BUG (RANDOM SAFE VERSION)
+   SHOUTOUT.JS – FINAL STABLE VERSION
+   - No indexClip
+   - Auto-create DOM
+   - Random clip (no repeat)
    ========================================================= */
 
 /* ===============================
@@ -7,49 +10,91 @@
    =============================== */
 let shoutoutTimeout = null;
 let lastClipId = null;
+let els = null;
+
+/* ===============================
+   DOM READY + AUTO CREATE ELEMENTS
+   =============================== */
+document.addEventListener("DOMContentLoaded", () => {
+
+    const container = document.getElementById("container");
+    if (!container) {
+        console.error("Container (#container) not found");
+        return;
+    }
+
+    // ---- VIDEO ----
+    let clipVideo = document.getElementById("clip");
+    if (!clipVideo) {
+        clipVideo = document.createElement("video");
+        clipVideo.id = "clip";
+        clipVideo.playsInline = true;
+        clipVideo.autoplay = true;
+        clipVideo.muted = false;
+        clipVideo.controls = false;
+        container.appendChild(clipVideo);
+    }
+
+    // ---- TEXT ----
+    let textContainer = document.getElementById("text-container");
+    if (!textContainer) {
+        textContainer = document.createElement("div");
+        textContainer.id = "text-container";
+        container.appendChild(textContainer);
+    }
+
+    // ---- DETAILS ----
+    let detailsContainer = document.getElementById("details-container");
+    if (!detailsContainer) {
+        detailsContainer = document.createElement("div");
+        detailsContainer.id = "details-container";
+        container.appendChild(detailsContainer);
+    }
+
+    els = {
+        container,
+        clipVideo,
+        textContainer,
+        detailsContainer
+    };
+
+    hideAll();
+});
 
 /* ===============================
    URL PARAMS
    =============================== */
-const urlParams = new URLSearchParams(window.location.search);
+const params = new URLSearchParams(window.location.search);
 
-const channel        = urlParams.get("channel");
-const showClip       = urlParams.get("showClip") === "true";
-const showMsg        = urlParams.get("showMsg") === "true";
-const showText       = urlParams.get("showText") === "true";
-const showImage      = urlParams.get("showImage") === "true";
-const showDetails    = urlParams.get("showDetails") === "true";
-const detailsText    = urlParams.get("detailsText") || "";
-const timeOut        = parseInt(urlParams.get("timeOut")) || 10;
-const dateRange      = parseInt(urlParams.get("dateRange")) || 0;
+const showClip    = params.get("showClip") === "true";
+const showText    = params.get("showText") === "true";
+const showDetails = params.get("showDetails") === "true";
+const detailsText = params.get("detailsText") || "";
+const timeOut     = parseInt(params.get("timeOut")) || 10;
+const dateRange   = parseInt(params.get("dateRange")) || 0;
 
 /* ===============================
-   DOM ELEMENTS
-   =============================== */
-const container        = document.getElementById("container");
-const clipVideo        = document.getElementById("clip");
-const textContainer    = document.getElementById("text-container");
-const detailsContainer = document.getElementById("details-container");
-
-/* ===============================
-   HELPER
+   HELPERS
    =============================== */
 function hideAll() {
-    if (container) container.style.display = "none";
-    if (textContainer) textContainer.style.display = "none";
-    if (detailsContainer) detailsContainer.style.display = "none";
+    if (!els) return;
 
-    if (clipVideo) {
-        clipVideo.pause();
-        clipVideo.removeAttribute("src");
-        clipVideo.load();
+    els.container.style.display = "none";
+    els.textContainer.style.display = "none";
+    els.detailsContainer.style.display = "none";
+
+    if (els.clipVideo) {
+        els.clipVideo.pause();
+        els.clipVideo.removeAttribute("src");
+        els.clipVideo.load();
     }
 }
+
 function showContainer() {
-    container.style.display = "block";
+    if (els) els.container.style.display = "block";
 }
 
-function replaceDetailsText(template, clip) {
+function formatDetails(template, clip) {
     return template
         .replace("{title}", clip.title || "")
         .replace("{game}", clip.game_name || "")
@@ -76,14 +121,13 @@ function pickRandomClip(clips) {
    MAIN SHOUTOUT
    =============================== */
 function startShoutout(info) {
-    if (!info || !info.data || info.data.length === 0) {
+    if (!els || !info || !info.data || info.data.length === 0) {
         console.warn("No clips found");
         return;
     }
 
     console.log("CLIPS LENGTH:", info.data.length);
 
-    // 🔥 FIX: random clip object (NO index)
     const clip = pickRandomClip(info.data);
     if (!clip) return;
 
@@ -91,41 +135,35 @@ function startShoutout(info) {
 
     showContainer();
 
-    /* ===== CLIP VIDEO ===== */
-    if (showClip && clipVideo) {
-        clipVideo.pause();
-        clipVideo.removeAttribute("src");
-        clipVideo.load();
+    /* ---- VIDEO ---- */
+    if (showClip && els.clipVideo) {
+        els.clipVideo.pause();
+        els.clipVideo.removeAttribute("src");
+        els.clipVideo.load();
 
         // cache bust สำคัญมาก
-        clipVideo.src = clip.clip_url + "?v=" + Date.now();
-        clipVideo.autoplay = true;
-        clipVideo.muted = false;
-        clipVideo.controls = false;
-        clipVideo.playsInline = true;
-        clipVideo.style.display = "block";
+        els.clipVideo.src = clip.clip_url + "?v=" + Date.now();
+        els.clipVideo.style.display = "block";
     }
 
-    /* ===== TITLE TEXT ===== */
-    if (showText && textContainer) {
-        textContainer.style.display = "block";
-        textContainer.innerHTML = `
+    /* ---- TEXT ---- */
+    if (showText && els.textContainer) {
+        els.textContainer.style.display = "block";
+        els.textContainer.innerHTML = `
             <span class="title-text">
                 GO CHECK OUT ${clip.broadcaster_name}
             </span>
         `;
     }
 
-    /* ===== DETAILS ===== */
-    if (showDetails && detailsContainer) {
-        detailsContainer.style.display = "block";
+    /* ---- DETAILS ---- */
+    if (showDetails && els.detailsContainer) {
+        els.detailsContainer.style.display = "block";
 
-        const formatted = replaceDetailsText(detailsText, clip)
+        els.detailsContainer.innerHTML = formatDetails(detailsText, clip)
             .split("\n")
-            .map((line, i) => `<div class="details-text item-${i}">${line}</div>`)
+            .map(line => `<div class="details-text">${line}</div>`)
             .join("");
-
-        detailsContainer.innerHTML = formatted;
     }
 
     clearTimeout(shoutoutTimeout);
@@ -135,21 +173,17 @@ function startShoutout(info) {
 /* ===============================
    FETCH CLIPS
    =============================== */
-function getClips(targetChannel) {
-    fetch(`getuserclips.php?channel=${targetChannel}&dateRange=${dateRange}`)
+function getClips(channel) {
+    fetch(`getuserclips.php?channel=${channel}&dateRange=${dateRange}`)
         .then(res => res.json())
         .then(info => startShoutout(info))
-        .catch(err => console.error("Error fetching clips:", err));
+        .catch(err => console.error("Fetch error:", err));
 }
 
 /* ===============================
-   INIT
+   EXPOSE FOR BOT / DEBUG
    =============================== */
-hideAll();
-
-/*
-   NOTE:
-   - เมื่อ bot รับ !so <channel>
-   - ต้องเรียก getClips(channel)
-   - logic socket / tmi.js ใช้ของเดิมได้เลย
-*/
+// bot หรือ tmi.js ต้องเรียกฟังก์ชันนี้
+window.triggerShoutout = function(channel) {
+    getClips(channel);
+};
