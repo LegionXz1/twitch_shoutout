@@ -1,13 +1,11 @@
-/* Kawaii Fried Chicken Theme - ไก่ทอดน่ารัก สีสันสดใส 🍗✨ */
-
-@import url('https://fonts.googleapis.com/css2?family=Chewy&family=Comic+Neue:wght@400;700&family=Bubblegum+Sans&display=swap');
+/* เปลี่ยนฟอนต์เป็น 'Kanit' หรือ 'Fredoka' ให้ดูน่ารักและรองรับภาษาไทย */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Kanit:wght@400;600&display=swap');
 
 html, body {
     overflow: hidden;
     background: transparent;
     padding: 0;
     margin: 0;
-    font-family: 'Chewy', 'Comic Neue', 'Bubblegum Sans', cursive, sans-serif;
 }
 
 .hide {
@@ -23,153 +21,120 @@ html, body {
     text-align: center;
 }
 
-/* Container หลัก */
 #container {
     display: block;
-    width: 100%;
-    height: 100vh;
-    position: relative;
-}
-
-/* Shoutout box หลัก - พื้นหลังสีทองกรอบไก่ทอด */
-#text-container,
-#details-container {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    padding: 10px; /* เพิ่ม padding นิดหน่อย */
+    margin: 4px;
     text-align: center;
 }
 
-/* พื้นหลังหลักของ shoutout - เหลืองทองกรอบไก่ */
+video {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    border-radius: 20px; /* เพิ่มความมน */
+    z-index: -1;
+    border: 4px solid #fff; /* ใส่ขอบขาวให้ดูเหมือนสติ๊กเกอร์ */
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+}
+
 #text-container {
-    top: 3vw;                          /* ย้ายขึ้นไปใกล้ขอบบนมากขึ้น */
-    width: 85%;                        /* ลดความกว้างลงนิดหน่อย */
-    max-width: 1000px;
-    background: linear-gradient(135deg, #ffe066, #ffcc33, #ff9900);
-    border-radius: 40px;
-    border: 12px solid #ff6699;
-    box-shadow: 0 0 40px rgba(255, 102, 153, 0.6);
-    padding: 15px 25px;                /* ลด padding ให้ box เล็กลงมาก */
-    animation: kawaiiBounce 1.4s ease-out forwards;
+    width: 100%;
+    position: absolute;
+    top: 10vw;
 }
 
-/* Animation เด้งน่ารัก ๆ */
-@keyframes kawaiiBounce {
-    0%   { transform: translateX(-50%) scale(0.4) rotate(-8deg); opacity: 0; }
-    60%  { transform: translateX(-50%) scale(1.12) rotate(4deg); opacity: 1; }
-    100% { transform: translateX(-50%) scale(1) rotate(0deg); }
-}
-
-/* ข้อความหลัก (ชื่อช่อง) */
 .title-text {
-    font-family: 'Chewy', cursive;
-    font-size: 7vw;
-    color: #ff3366;                       /* ชมพูสด แก้มไก่แดง */
-    text-shadow: 
-        5px 5px 0 #ffffff,
-        10px 10px 0 #ffcc00;
-    margin: 0;
-    padding: 10px 0;
-    line-height: 1.1;
+    /* เปลี่ยนฟอนต์ */
+    font-family: 'Fredoka', 'Kanit', sans-serif;
+    font-weight: 600;
+    font-size: 5vw;
+    word-wrap: break-word;
+    
+    /* สีไก่ทอด */
+    color: #fff;
+    -webkit-text-stroke: 1px #8D6E63; /* ขอบตัวหนังสือสีน้ำตาลอ่อน */
+    
+    text-align: center;
+    /* เงาแบบน่ารัก ไม่แข็งเกินไป */
+    text-shadow: 3px 3px 0px #FF8F00, 
+                 5px 5px 0px rgba(0,0,0,0.1); 
 }
 
-/* รายละเอียดอื่น ๆ (game, viewers, etc.) */
+/* Profile image */
+#profile {
+    border-radius: 100%;
+    border: 5px solid #fff; /* ขอบขาวหนาๆ */
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+}
+
 #details-container {
-    top: auto;                         /* ลบ top เดิม */
-    bottom: 4vw;                       /* วางติดขอบล่าง */
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(255, 204, 51, 0.8);
-    border: 8px solid #ff6699;
-    border-radius: 35px;
-    padding: 15px 30px;
+    position: absolute;
+    top: 36vw;
+    
+    /* พื้นหลังสีเหลืองทอง เหมือนแป้งทอด */
+    background: #FFB74D; 
+    border: 3px solid #FFF; /* ขอบขาวตัดเลี่ยน */
+    
+    padding: 15px 30px 15px 30px;
+    margin-right: 24px;
+    
+    /* ปรับให้มนทุกมุมเหมือนนักเก็ต */
+    border-radius: 30px; 
+    
     width: auto;
-    max-width: 80%;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    animation: fadeout 12s forwards;
+    animation: fadeout 10s forwards;
+    box-shadow: 4px 4px 0px #E65100; /* เงาแข็งสีส้มเข้มให้ดูป๊อป */
 }
 
 #details-container .details-text {
-    color: #ffffff;
-    text-shadow: 2px 2px 0 #ff3366;
-    text-align: center;
+    font-family: 'Kanit', sans-serif; /* ฟอนต์ไทยอ่านง่าย */
+    font-weight: bold;
+    word-wrap: break-word;
+    
+    /* เปลี่ยนสีตัวหนังสือเป็นน้ำตาลเข้ม (สีซอส) จะอ่านง่ายกว่าสีขาวล้วนบนพื้นเหลือง */
+    color: #4E342E; 
+    text-align: left;
+    text-shadow: none; /* เอาเงาดำออก เพื่อความคลีน */
 }
 
 #details-container .details-text.item-0 {
-    font-size: 4vw;
-    font-weight: bold;
-    color: #ffffff;
+    font-size: 3vw;
+    font-weight: 800; /* หนาพิเศษ */
+    color: #BF360C; /* สีส้มแดงเข้มสำหรับหัวข้อ */
 }
 
-#details-container .details-text.item-1,
-#details-container .details-text.item-2,
+#details-container .details-text.item-1 {
+    font-size: 2.5vw;
+    font-weight: 600;
+}
+
+#details-container .details-text.item-2 {
+    font-size: 2vw;
+    font-weight: 500;
+}
+
 #details-container .details-text.item-3 {
-    font-size: 2.8vw;
-    font-weight: normal;
-    margin: 8px 0;
+    font-size: 1.5vw;
+    font-weight: 400;
 }
 
-/* คลิปวิดีโอ */
-#video {
-    width: 85%;
-    max-width: 1000px;
-    height: auto;
-    max-height: 65vh;                  /* เพิ่มความสูงคลิปให้ใหญ่ขึ้น */
-    border-radius: 40px;
-    border: 12px solid #ffffff;
-    box-shadow: 0 15px 50px rgba(0,0,0,0.4);
-    margin: 18vw auto 18vw;            /* เพิ่ม margin บนและล่างให้มากขึ้น เพื่อเว้นที่ text */
-    display: block;
-}
-
-/* รูปโปรไฟล์ (ถ้ามี) */
-#profile {
-    border-radius: 50%;
-    border: 10px solid #ffcc99;          /* สีครีมแบบแป้งทอด */
-    box-shadow: 0 0 30px #ff6699;
-    width: 220px;
-    height: 220px;
-    object-fit: cover;
-    margin: 20px auto;
-}
-
-/* เพิ่มลูกเล่นน่ารัก - emoji ไก่ลอย ๆ */
-#text-container::before {
-    content: "🍗🍟🔥💕🍗";
+/* เพิ่มลูกเล่นเล็กๆ (Optional) */
+#details-container::after {
+    content: '🍗'; /* ใส่ไอคอนน่องไก่ */
     position: absolute;
-    top: -70px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 6rem;
-    opacity: 0.9;
-    pointer-events: none;
-    animation: floatEmoji 7s infinite ease-in-out;
+    right: -10px;
+    top: -15px;
+    font-size: 3vw;
+    transform: rotate(20deg);
 }
 
-@keyframes floatEmoji {
-    0%, 100%   { transform: translateX(-50%) translateY(0); }
-    50%        { transform: translateX(-50%) translateY(-25px); }
-}
-
-/* พื้นหลังจุด ๆ เบา ๆ (เหมือนงาชิกเก้น) */
-body::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: 
-        radial-gradient(circle at 15% 20%, rgba(255,255,255,0.4) 8%, transparent 20%),
-        radial-gradient(circle at 85% 75%, rgba(255,204,51,0.3) 10%, transparent 25%);
-    pointer-events: none;
-    opacity: 0.5;
-}
-
-/* Animation fade out เดิมยังใช้ได้ */
 @keyframes fadeout {
-    0%   { opacity: 1; }
-    90%  { opacity: 1; }
-    100% { opacity: 0; }
+    0%   {opacity: 1; transform: scale(1);}
+    90%  {opacity: 1; transform: scale(1);}
+    100% {opacity: 0; transform: scale(0.8);} /* เพิ่ม effect หดตัวตอนหายไป */
 }
 
 @keyframes slide {
-    100% { left: 0; }
+    100% {left: 0;}
 }
