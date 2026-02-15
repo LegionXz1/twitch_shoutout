@@ -1,113 +1,49 @@
-/* =========================================================
-   SHOUTOUT.JS – FINAL STABLE VERSION
-   - No indexClip
-   - Auto-create DOM
-   - Random clip (no repeat)
-   ========================================================= */
+console.log("🔥 shoutout.js LOADED");
 
 /* ===============================
-   GLOBAL STATE
+   GLOBAL
    =============================== */
-let shoutoutTimeout = null;
-let lastClipId = null;
 let els = null;
+let lastClipId = null;
 
 /* ===============================
-   DOM READY + AUTO CREATE ELEMENTS
+   DOM READY
    =============================== */
 document.addEventListener("DOMContentLoaded", () => {
+    console.log("✅ DOMContentLoaded");
 
     const container = document.getElementById("container");
     if (!container) {
-        console.error("Container (#container) not found");
+        console.error("❌ #container NOT FOUND");
         return;
     }
 
-    // ---- VIDEO ----
-    let clipVideo = document.getElementById("clip");
-    if (!clipVideo) {
-        clipVideo = document.createElement("video");
-        clipVideo.id = "clip";
-        clipVideo.playsInline = true;
-        clipVideo.autoplay = true;
-        clipVideo.muted = false;
-        clipVideo.controls = false;
-        container.appendChild(clipVideo);
-    }
+    // create video
+    const video = document.createElement("video");
+    video.id = "clip";
+    video.autoplay = true;
+    video.muted = false;
+    video.playsInline = true;
+    video.controls = true;
+    video.style.width = "640px";
 
-    // ---- TEXT ----
-    let textContainer = document.getElementById("text-container");
-    if (!textContainer) {
-        textContainer = document.createElement("div");
-        textContainer.id = "text-container";
-        container.appendChild(textContainer);
-    }
+    container.appendChild(video);
 
-    // ---- DETAILS ----
-    let detailsContainer = document.getElementById("details-container");
-    if (!detailsContainer) {
-        detailsContainer = document.createElement("div");
-        detailsContainer.id = "details-container";
-        container.appendChild(detailsContainer);
-    }
+    els = { container, video };
 
-    els = {
-        container,
-        clipVideo,
-        textContainer,
-        detailsContainer
-    };
+    console.log("✅ Video element created");
 
-    hideAll();
+    // FORCE shoutout after 3 sec
+    setTimeout(() => {
+        console.log("🚀 FORCE TRIGGER SHOUTOUT");
+        getClips("legionxiz");
+    }, 3000);
 });
 
 /* ===============================
-   URL PARAMS
-   =============================== */
-const params = new URLSearchParams(window.location.search);
-
-const showClip    = params.get("showClip") === "true";
-const showText    = params.get("showText") === "true";
-const showDetails = params.get("showDetails") === "true";
-const detailsText = params.get("detailsText") || "";
-const timeOut     = parseInt(params.get("timeOut")) || 10;
-const dateRange   = parseInt(params.get("dateRange")) || 0;
-
-/* ===============================
-   HELPERS
-   =============================== */
-function hideAll() {
-    if (!els) return;
-
-    els.container.style.display = "none";
-    els.textContainer.style.display = "none";
-    els.detailsContainer.style.display = "none";
-
-    if (els.clipVideo) {
-        els.clipVideo.pause();
-        els.clipVideo.removeAttribute("src");
-        els.clipVideo.load();
-    }
-}
-
-function showContainer() {
-    if (els) els.container.style.display = "block";
-}
-
-function formatDetails(template, clip) {
-    return template
-        .replace("{title}", clip.title || "")
-        .replace("{game}", clip.game_name || "")
-        .replace("{creator_name}", clip.creator_name || "")
-        .replace("{created_at}", clip.created_at || "");
-}
-
-/* ===============================
-   RANDOM CLIP (SAFE)
+   RANDOM
    =============================== */
 function pickRandomClip(clips) {
-    if (!clips || clips.length === 0) return null;
-
     let clip;
     do {
         clip = clips[Math.floor(Math.random() * clips.length)];
@@ -118,98 +54,28 @@ function pickRandomClip(clips) {
 }
 
 /* ===============================
-   MAIN SHOUTOUT
-   =============================== */
-function startShoutout(info) {
-    if (!els || !info || !info.data || info.data.length === 0) {
-        console.warn("No clips found");
-        return;
-    }
-
-    console.log("CLIPS LENGTH:", info.data.length);
-
-    const clip = pickRandomClip(info.data);
-    if (!clip) return;
-
-    console.log("SELECTED CLIP:", clip.id);
-
-    showContainer();
-
-    /* ---- VIDEO ---- */
-    if (showClip && els.clipVideo) {
-        els.clipVideo.pause();
-        els.clipVideo.removeAttribute("src");
-        els.clipVideo.load();
-
-        // cache bust สำคัญมาก
-        els.clipVideo.src = clip.clip_url + "?v=" + Date.now();
-        els.clipVideo.style.display = "block";
-    }
-
-    /* ---- TEXT ---- */
-    if (showText && els.textContainer) {
-        els.textContainer.style.display = "block";
-        els.textContainer.innerHTML = `
-            <span class="title-text">
-                GO CHECK OUT ${clip.broadcaster_name}
-            </span>
-        `;
-    }
-
-    /* ---- DETAILS ---- */
-    if (showDetails && els.detailsContainer) {
-        els.detailsContainer.style.display = "block";
-
-        els.detailsContainer.innerHTML = formatDetails(detailsText, clip)
-            .split("\n")
-            .map(line => `<div class="details-text">${line}</div>`)
-            .join("");
-    }
-
-    clearTimeout(shoutoutTimeout);
-    shoutoutTimeout = setTimeout(hideAll, timeOut * 1000);
-}
-
-/* ===============================
-   FETCH CLIPS
+   FETCH
    =============================== */
 function getClips(channel) {
-    fetch(`getuserclips.php?channel=${channel}&dateRange=${dateRange}`)
-        .then(res => res.json())
-        .then(info => startShoutout(info))
-        .catch(err => console.error("Fetch error:", err));
-}
+    console.log("📡 FETCH clips for:", channel);
 
-/* ===============================
-   EXPOSE FOR BOT / DEBUG
-   =============================== */
-// bot หรือ tmi.js ต้องเรียกฟังก์ชันนี้
-window.triggerShoutout = function(channel) {
-    getClips(channel);
-};
-/* ===============================
-   TMI.JS LISTENER (!so)
-   =============================== */
-const channelParam = params.get("channel");
+    fetch(`getuserclips.php?channel=${channel}`)
+        .then(res => {
+            console.log("📡 fetch response:", res.status);
+            return res.json();
+        })
+        .then(info => {
+            console.log("📦 API DATA:", info);
 
-if (channelParam && window.tmi) {
-    const client = new tmi.Client({
-        channels: [channelParam]
-    });
+            if (!info.data || info.data.length === 0) {
+                console.error("❌ NO CLIPS");
+                return;
+            }
 
-    client.connect();
+            const clip = pickRandomClip(info.data);
+            console.log("🎬 SELECTED:", clip.clip_url);
 
-    client.on("message", (channel, tags, message, self) => {
-        if (self) return;
-
-        if (message.toLowerCase().startsWith("!so")) {
-            const parts = message.split(" ");
-            const target = parts[1]
-                ? parts[1].replace("@", "")
-                : channelParam;
-
-            console.log("TRIGGER SHOUTOUT:", target);
-            getClips(target);
-        }
-    });
+            els.video.src = clip.clip_url + "?v=" + Date.now();
+        })
+        .catch(err => console.error("❌ FETCH ERROR", err));
 }
