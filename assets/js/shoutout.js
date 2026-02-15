@@ -1,12 +1,11 @@
 /* =========================================================
-   SHOUTOUT.JS – RANDOM CLIP VERSION
+   SHOUTOUT.JS – FIX indexClip BUG (RANDOM SAFE VERSION)
    ========================================================= */
 
 /* ===============================
    GLOBAL STATE
    =============================== */
 let shoutoutTimeout = null;
-let indexClip = 0;
 let lastClipId = null;
 
 /* ===============================
@@ -33,7 +32,7 @@ const textContainer    = document.getElementById("text-container");
 const detailsContainer = document.getElementById("details-container");
 
 /* ===============================
-   HELPER FUNCTIONS
+   HELPER
    =============================== */
 function hideAll() {
     container.style.display = "none";
@@ -58,24 +57,22 @@ function replaceDetailsText(template, clip) {
 }
 
 /* ===============================
-   RANDOM CLIP SELECTOR
+   RANDOM CLIP (SAFE)
    =============================== */
 function pickRandomClip(clips) {
     if (!clips || clips.length === 0) return null;
 
-    let selected;
-
-    // ถ้ามีมากกว่า 1 clip → ห้ามซ้ำติดกัน
+    let clip;
     do {
-        selected = clips[Math.floor(Math.random() * clips.length)];
-    } while (clips.length > 1 && selected.id === lastClipId);
+        clip = clips[Math.floor(Math.random() * clips.length)];
+    } while (clips.length > 1 && clip.id === lastClipId);
 
-    lastClipId = selected.id;
-    return selected;
+    lastClipId = clip.id;
+    return clip;
 }
 
 /* ===============================
-   MAIN SHOUTOUT LOGIC
+   MAIN SHOUTOUT
    =============================== */
 function startShoutout(info) {
     if (!info || !info.data || info.data.length === 0) {
@@ -83,20 +80,24 @@ function startShoutout(info) {
         return;
     }
 
-    // 🔥 RANDOM CLIP HERE
+    console.log("CLIPS LENGTH:", info.data.length);
+
+    // 🔥 FIX: random clip object (NO index)
     const clip = pickRandomClip(info.data);
     if (!clip) return;
 
-    // ===========================
-    // SHOW CONTAINER
-    // ===========================
+    console.log("SELECTED CLIP:", clip.id);
+
     showContainer();
 
-    // ===========================
-    // CLIP VIDEO
-    // ===========================
+    /* ===== CLIP VIDEO ===== */
     if (showClip && clipVideo) {
-        clipVideo.src = clip.clip_url;
+        clipVideo.pause();
+        clipVideo.removeAttribute("src");
+        clipVideo.load();
+
+        // cache bust สำคัญมาก
+        clipVideo.src = clip.clip_url + "?v=" + Date.now();
         clipVideo.autoplay = true;
         clipVideo.muted = false;
         clipVideo.controls = false;
@@ -104,9 +105,7 @@ function startShoutout(info) {
         clipVideo.style.display = "block";
     }
 
-    // ===========================
-    // TITLE TEXT
-    // ===========================
+    /* ===== TITLE TEXT ===== */
     if (showText && textContainer) {
         textContainer.style.display = "block";
         textContainer.innerHTML = `
@@ -116,9 +115,7 @@ function startShoutout(info) {
         `;
     }
 
-    // ===========================
-    // DETAILS PANEL
-    // ===========================
+    /* ===== DETAILS ===== */
     if (showDetails && detailsContainer) {
         detailsContainer.style.display = "block";
 
@@ -130,9 +127,6 @@ function startShoutout(info) {
         detailsContainer.innerHTML = formatted;
     }
 
-    // ===========================
-    // AUTO HIDE
-    // ===========================
     clearTimeout(shoutoutTimeout);
     shoutoutTimeout = setTimeout(hideAll, timeOut * 1000);
 }
@@ -143,32 +137,18 @@ function startShoutout(info) {
 function getClips(targetChannel) {
     fetch(`getuserclips.php?channel=${targetChannel}&dateRange=${dateRange}`)
         .then(res => res.json())
-        .then(info => {
-            startShoutout(info);
-        })
-        .catch(err => {
-            console.error("Error fetching clips:", err);
-        });
-}
-
-/* ===============================
-   SOCKET / COMMAND HANDLER
-   =============================== */
-/* 
-   NOTE:
-   - ส่วนนี้ยึด logic เดิมของโปรเจกต์
-   - เมื่อมีคำสั่ง !so → ให้เรียก getClips(channel)
-*/
-
-if (channel) {
-    // สำหรับทดสอบ manual (เปิดหน้าแล้วเรียกเอง)
-    // getClips(channel);
+        .then(info => startShoutout(info))
+        .catch(err => console.error("Error fetching clips:", err));
 }
 
 /* ===============================
    INIT
    =============================== */
 hideAll();
-console.log("CLIPS LENGTH:", info.data.length);
-console.log(info.data);
 
+/*
+   NOTE:
+   - เมื่อ bot รับ !so <channel>
+   - ต้องเรียก getClips(channel)
+   - logic socket / tmi.js ใช้ของเดิมได้เลย
+*/
