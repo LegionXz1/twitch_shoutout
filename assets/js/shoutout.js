@@ -474,7 +474,10 @@ $(document).ready(function () {
 
                     getClips(getChannel, function (info) {
 
-                        console.log(info.data[0]);
+                        indexClip = Math.floor(Math.random() * info.data.length);
+                        console.log("Random clip index:", indexClip);
+                        console.log(info.data[indexClip]);
+
 
                         // If clips exist
                         if (info.data[0] && info.data[0].clip_url > '') {
@@ -483,7 +486,7 @@ $(document).ready(function () {
 
                             console.log('Clip URL: ' + info.data[0].clip_url);
 
-                            let clip_url = info.data[0].clip_url;
+                            let clip_url = info.data[indexClip].clip_url;
 
                             // Remove existing video element
                             if (document.getElementById("clip")) {
