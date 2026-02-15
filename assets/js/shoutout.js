@@ -308,9 +308,9 @@ $(document).ready(function () {
 
             // get the clip_url from the api
             getClipUrl(clip_Id, function (info) {
-                if (info.data[0].clip_url) {
+                if (info.data[indexClip].clip_url) {
                     // save the clip url to localstorage
-                    localStorage.setItem('twitchSOWatchClip', info.data[0].clip_url);
+                    localStorage.setItem('twitchSOWatchClip', info.data[indexClip].clip_url);
                 }
             });
 
@@ -448,22 +448,22 @@ $(document).ready(function () {
                         client.say(channelName,"");
                     } else {
                         // If user has streamed anything then say message
-                        if (info.data[0]['game_name']) {
+                        if (info.data[indexClip]['game_name']) {
                             if (customMsg) {
                                 customMsg = getUrlParameter('customMsg').trim();
-                                customMsg = customMsg.replace("{channel}", info.data[0]['broadcaster_name']);
-                                customMsg = customMsg.replace("{game}", info.data[0]['game_name']);
-                                customMsg = customMsg.replace("{title}", info.data[0]['title']);
-                                customMsg = customMsg.replace("{url}", "https://twitch.tv/" + info.data[0]['broadcaster_login']);
+                                customMsg = customMsg.replace("{channel}", info.data[indexClip]['broadcaster_name']);
+                                customMsg = customMsg.replace("{game}", info.data[indexClip]['game_name']);
+                                customMsg = customMsg.replace("{title}", info.data[indexClip]['title']);
+                                customMsg = customMsg.replace("{url}", "https://twitch.tv/" + info.data[indexClip]['broadcaster_login']);
                                 // Say custom message in chat
                                 client.say(channelName, decodeURIComponent(customMsg));
                             } else {
                                 // Say default message in chat
-                                client.say(channelName, "Go check out " + info.data[0]['broadcaster_name'] + "! They were playing: " + info.data[0]['game_name'] + " - " + info.data[0]['title'] + " - https://twitch.tv/" + info.data[0]['broadcaster_login']);
+                                client.say(channelName, "Go check out " + info.data[indexClip]['broadcaster_name'] + "! They were playing: " + info.data[indexClip]['game_name'] + " - " + info.data[indexClip]['title'] + " - https://twitch.tv/" + info.data[indexClip]['broadcaster_login']);
                             }
                             // Say generic message in chat
                         } else {
-                            client.say(channelName, "Go check out " + info.data[0]['broadcaster_name'] + "! https://twitch.tv/" + info.data[0]['broadcaster_login']);
+                            client.say(channelName, "Go check out " + info.data[indexClip]['broadcaster_name'] + "! https://twitch.tv/" + info.data[indexClip]['broadcaster_login']);
                         }
                     }
 
@@ -473,18 +473,24 @@ $(document).ready(function () {
                 if (showClip === 'true' || showRecentClip === 'true') {
 
                     getClips(getChannel, function (info) {
+                    // ตรวจสอบว่ามีข้อมูลคลิปส่งกลับมาหรือไม่
+                        if (info.data && info.data.length > 0) {
+        
+        // --- ส่วนที่เพิ่มเข้ามาเพื่อการสุ่ม ---
+        // สุ่มตัวเลข Index จากจำนวนคลิปทั้งหมดที่ดึงมาได้ (ปกติ API จะส่งมาประมาณ 20 คลิป)
+                            let randomIndex = Math.floor(Math.random() * info.data.length);
+                            let selectedClip = info.data[randomIndex];
+        // ----------------------------------
 
-                        console.log(info.data[0]);
+                            if (selectedClip && selectedClip.clip_url > '') {
 
-                        // If clips exist
-                        if (info.data[0] && info.data[0].clip_url > '') {
+                                console.log('Selected Random Clip Index: ' + randomIndex);
+                                console.log('Clip URL: ' + selectedClip.clip_url);
 
-                            console.log('Clips exist!');
-
-                            console.log('Clip URL: ' + info.data[0].clip_url);
-
-                            let clip_url = info.data[0].clip_url;
-
+                                let clip_url = selectedClip.clip_url;
+            
+            // อัปเดต indexClip ให้เป็นค่าที่สุ่มได้ เพื่อให้ Text/Details แสดงผลตรงกับคลิป
+                                indexClip = randomIndex;
                             // Remove existing video element
                             if (document.getElementById("clip")) {
                                 document.getElementById("clip").remove();
@@ -508,7 +514,7 @@ $(document).ready(function () {
                                     }
                                     titleText = "<div id='text-container' class='hide'><span class='title-text'>" + decodeURIComponent(customTitle) + "</span></div>"
                                 } else {
-                                    titleText = "<div id='text-container' class='hide'><span class='title-text'>Go check out " + info.data[0]['broadcaster_name'] + "</span></div>"
+                                    titleText = "<div id='text-container' class='hide'><span class='title-text'>Go check out " + info.data[indexClip]['broadcaster_name'] + "</span></div>"
                                 }
                             } else {
                                 titleText = '';
@@ -648,11 +654,11 @@ $(document).ready(function () {
                                 console.log('show profile image!');
 
                                 getInfo(getChannel, function (info) {
-                                    let userImage = info.data[0]['profile_image_url'];
+                                    let userImage = info.data[indexClip]['profile_image_url'];
 
                                     // Text on top of clip
                                     if (showText === 'true') {
-                                        titleText = "<div id='text-container'><span class='title-text'>Go check out " + info.data[0]['display_name'] + "</span></div>"
+                                        titleText = "<div id='text-container'><span class='title-text'>Go check out " + info.data[indexClip]['display_name'] + "</span></div>"
                                     } else {
                                         titleText = '';
                                     }
