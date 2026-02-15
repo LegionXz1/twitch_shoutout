@@ -1,140 +1,155 @@
-/* เปลี่ยนฟอนต์เป็น 'Kanit' หรือ 'Fredoka' ให้ดูน่ารักและรองรับภาษาไทย */
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Kanit:wght@400;600&display=swap');
+/* ===============================
+   GAMING MINIMAL SHOUTOUT THEME
+   =============================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700&display=swap');
+
+:root {
+    --bg-dark: rgba(15, 15, 20, 0.92);
+    --accent: #8b5cf6;      /* ม่วงเกม */
+    --accent-soft: #22d3ee; /* ฟ้า HUD */
+    --text-main: #ffffff;
+    --text-sub: #cbd5f5;
+    --border: rgba(139,92,246,0.6);
+}
 
 html, body {
-    overflow: hidden;
-    background: transparent;
-    padding: 0;
     margin: 0;
+    padding: 0;
+    background: transparent;
+    overflow: hidden;
+    font-family: 'Kanit', sans-serif;
 }
 
-.hide {
-    display: none;
-}
+.hide { display: none; }
+.img-fluid { max-width: 100%; height: auto; }
+.text-center { text-align: center; }
 
-.img-fluid {
-    max-width: 100%;
-    height: auto;
-}
-
-.text-center {
-    text-align: center;
-}
-
+/* ===== Container ===== */
 #container {
-    display: block;
-    padding: 10px; /* เพิ่ม padding นิดหน่อย */
-    margin: 4px;
-    text-align: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
+/* ===== Video / Clip ===== */
 video {
     width: 100%;
     height: auto;
-    max-height: 100%;
-    border-radius: 20px; /* เพิ่มความมน */
-    z-index: -1;
-    border: 4px solid #fff; /* ใส่ขอบขาวให้ดูเหมือนสติ๊กเกอร์ */
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    box-shadow: 0 0 25px rgba(139,92,246,0.25);
 }
 
+/* ===== Title (SHOUTOUT NAME) ===== */
 #text-container {
-    width: 100%;
     position: absolute;
-    top: 10vw;
+    top: 8%;
+    width: 100%;
 }
 
 .title-text {
-    /* เปลี่ยนฟอนต์ */
-    font-family: 'Fredoka', 'Kanit', sans-serif;
-    font-weight: 600;
-    font-size: 5vw;
-    word-wrap: break-word;
-    
-    /* สีไก่ทอด */
-    color: #fff;
-    -webkit-text-stroke: 1px #8D6E63; /* ขอบตัวหนังสือสีน้ำตาลอ่อน */
-    
-    text-align: center;
-    /* เงาแบบน่ารัก ไม่แข็งเกินไป */
-    text-shadow: 3px 3px 0px #FF8F00, 
-                 5px 5px 0px rgba(0,0,0,0.1); 
+    font-size: 4.2vw;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-shadow: 0 0 14px rgba(139,92,246,0.6);
 }
 
-/* Profile image */
+/* ===== Profile ===== */
 #profile {
-    border-radius: 100%;
-    border: 5px solid #fff; /* ขอบขาวหนาๆ */
-    box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+    width: 7vw;
+    height: 7vw;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 16px rgba(34,211,238,0.5);
 }
 
+/* ===== Details Box ===== */
 #details-container {
     position: absolute;
-    top: 36vw;
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
     
-    /* พื้นหลังสีเหลืองทอง เหมือนแป้งทอด */
-    background: #FFB74D; 
-    border: 3px solid #FFF; /* ขอบขาวตัดเลี่ยน */
+    background: var(--bg-dark);
+    border: 1px solid var(--border);
+    border-radius: 12px;
     
-    padding: 15px 30px 15px 30px;
-    margin-right: 24px;
+    padding: 18px 26px;
+    min-width: 60%;
     
-    /* ปรับให้มนทุกมุมเหมือนนักเก็ต */
-    border-radius: 30px; 
-    
-    width: auto;
-    animation: fadeout 10s forwards;
-    box-shadow: 4px 4px 0px #E65100; /* เงาแข็งสีส้มเข้มให้ดูป๊อป */
+    animation: hudIn 0.6s ease-out,
+               hudOut 10s forwards;
 }
 
-#details-container .details-text {
-    font-family: 'Kanit', sans-serif; /* ฟอนต์ไทยอ่านง่าย */
-    font-weight: bold;
-    word-wrap: break-word;
-    
-    /* เปลี่ยนสีตัวหนังสือเป็นน้ำตาลเข้ม (สีซอส) จะอ่านง่ายกว่าสีขาวล้วนบนพื้นเหลือง */
-    color: #4E342E; 
-    text-align: left;
-    text-shadow: none; /* เอาเงาดำออก เพื่อความคลีน */
-}
-
-#details-container .details-text.item-0 {
-    font-size: 3vw;
-    font-weight: 800; /* หนาพิเศษ */
-    color: #BF360C; /* สีส้มแดงเข้มสำหรับหัวข้อ */
-}
-
-#details-container .details-text.item-1 {
-    font-size: 2.5vw;
-    font-weight: 600;
-}
-
-#details-container .details-text.item-2 {
-    font-size: 2vw;
-    font-weight: 500;
-}
-
-#details-container .details-text.item-3 {
-    font-size: 1.5vw;
-    font-weight: 400;
-}
-
-/* เพิ่มลูกเล่นเล็กๆ (Optional) */
-#details-container::after {
-    content: '🍗'; /* ใส่ไอคอนน่องไก่ */
+/* HUD line */
+#details-container::before {
+    content: '';
     position: absolute;
-    right: -10px;
-    top: -15px;
-    font-size: 3vw;
-    transform: rotate(20deg);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--accent),
+        var(--accent-soft),
+        transparent
+    );
 }
 
-@keyframes fadeout {
-    0%   {opacity: 1; transform: scale(1);}
-    90%  {opacity: 1; transform: scale(1);}
-    100% {opacity: 0; transform: scale(0.8);} /* เพิ่ม effect หดตัวตอนหายไป */
+/* ===== Text inside ===== */
+#details-container .details-text {
+    color: var(--text-sub);
+    font-size: 1.8vw;
+    line-height: 1.4;
 }
 
-@keyframes slide {
-    100% {left: 0;}
+/* Username / Channel */
+#details-container .details-text.item-0 {
+    font-size: 2.4vw;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: 0.05em;
+}
+
+/* Game / Status */
+#details-container .details-text.item-1 {
+    font-size: 1.9vw;
+    color: var(--accent-soft);
+}
+
+/* Description */
+#details-container .details-text.item-2 {
+    font-size: 1.6vw;
+}
+
+/* Small info */
+#details-container .details-text.item-3 {
+    font-size: 1.3vw;
+    opacity: 0.75;
+}
+
+/* ===== Animations ===== */
+@keyframes hudIn {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+@keyframes hudOut {
+    0%   { opacity: 1; }
+    90%  { opacity: 1; }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, 20px);
+    }
 }
