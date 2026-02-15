@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700&display=swap');
 
-/* ==================================================
-   GLOBAL RESET
-   ================================================== */
+/* ===============================
+   GLOBAL
+   =============================== */
 html, body {
     margin: 0;
     padding: 0;
@@ -11,9 +11,9 @@ html, body {
     font-family: 'Kanit', sans-serif;
 }
 
-/* ==================================================
-   MAIN CONTAINER (HIDDEN BY DEFAULT)
-   ================================================== */
+/* ===============================
+   CONTAINER (DO NOT HIDE!)
+   =============================== */
 #container {
     position: absolute;
     top: 50%;
@@ -24,10 +24,7 @@ html, body {
     flex-direction: column;
     align-items: center;
 
-    opacity: 0;                 /* ❗ สำคัญ: ซ่อนก่อน !so */
-    pointer-events: none;
-
-    background: rgba(9,9,11,0.88);
+    background: rgba(9, 9, 11, 0.88);
     padding: 22px 24px 24px;
     border-radius: 14px;
     border: 2px solid rgba(255,255,255,0.12);
@@ -39,9 +36,18 @@ html, body {
     z-index: 5;
 }
 
-/* ==================================================
+/* ===============================
+   DEFAULT HIDDEN (JS CONTROLS THIS)
+   =============================== */
+#clip,
+#text-container,
+#details-container {
+    display: none;
+}
+
+/* ===============================
    TITLE
-   ================================================== */
+   =============================== */
 #text-container {
     margin-bottom: 14px;
     text-align: center;
@@ -60,12 +66,16 @@ html, body {
         0 0 3px rgba(255,255,255,0.15);
 }
 
-/* ==================================================
-   CLIP VIDEO
-   ================================================== */
+/* ===============================
+   CLIP (SAFE FOR VIDEO RENDER)
+   =============================== */
 #clip {
+    display: block;              /* JS will toggle */
     width: 860px;
     max-width: 88vw;
+    height: auto;
+
+    min-height: 360px;           /* 🔥 สำคัญ: กัน video 0px */
 
     border-radius: 12px;
     border: 2px solid rgba(255,255,255,0.18);
@@ -78,9 +88,9 @@ html, body {
     z-index: 5;
 }
 
-/* ==================================================
+/* ===============================
    DETAILS PANEL
-   ================================================== */
+   =============================== */
 #details-container {
     margin-top: 14px;
     width: 100%;
@@ -90,8 +100,8 @@ html, body {
     border-radius: 6px;
 
     padding: 14px 18px;
-
     box-shadow: 0 0 18px rgba(0,0,0,0.8);
+
     z-index: 6;
 }
 
@@ -108,9 +118,9 @@ html, body {
     letter-spacing: 0.08em;
 }
 
-/* ==================================================
-   FOG EFFECT (PURE CSS – SAFE)
-   ================================================== */
+/* ===============================
+   FOG EFFECT (CARD ONLY)
+   =============================== */
 #container::before {
     content: '';
     position: absolute;
@@ -123,7 +133,7 @@ html, body {
 
     animation: fogMove 18s linear infinite;
     pointer-events: none;
-    z-index: 3;
+    z-index: 2;
 }
 
 @keyframes fogMove {
@@ -132,9 +142,9 @@ html, body {
     100% { transform: translateX(-4%); }
 }
 
-/* ==================================================
-   BLOOD SPLATTER (SOFT + LOOP)
-   ================================================== */
+/* ===============================
+   BLOOD SPLATTER (SOFT)
+   =============================== */
 #container::after {
     content: '';
     position: absolute;
