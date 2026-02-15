@@ -294,3 +294,20 @@ html, body {
     position: relative;
     z-index: 1;
 }
+/* ===============================
+   IMAGE BACKGROUND (REPLACE ORANGE)
+   =============================== */
+#container {
+    background-image:
+        linear-gradient(
+            rgba(255, 140, 0, 0.55),
+            rgba(255, 140, 0, 0.55)
+        ),
+        url("https://raw.githubusercontent.com/LegionXz1/twitch_shoutout/refs/heads/main/assets/images/BG_so.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    border-radius: 18px;
+}
