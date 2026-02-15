@@ -263,3 +263,34 @@ html, body {
 
     opacity: 0.95;
 }
+/* ===============================
+   CHICKEN BACKGROUND PATTERN
+   =============================== */
+#container {
+    position: relative;
+    overflow: hidden;
+}
+
+#container::before {
+    content: "🐔 🐔 🐔 🐔 🐔 🐔 🐔 🐔";
+    position: absolute;
+    inset: 0;
+
+    font-size: 64px;
+    line-height: 140px;
+    letter-spacing: 120px;
+
+    color: rgba(255, 255, 255, 0.08); /* ลายจาง */
+    text-align: center;
+
+    transform: rotate(-12deg) translateY(-40px);
+
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ให้ content จริงอยู่เหนือ pattern */
+#container > * {
+    position: relative;
+    z-index: 1;
+}
