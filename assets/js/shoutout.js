@@ -169,3 +169,6 @@ if (channel) {
    INIT
    =============================== */
 hideAll();
+console.log("CLIPS LENGTH:", info.data.length);
+console.log(info.data);
+
