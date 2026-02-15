@@ -42,16 +42,14 @@ html, body {
 
 /* พื้นหลังหลักของ shoutout - เหลืองทองกรอบไก่ */
 #text-container {
-    top: 10vw;
-    width: 90%;
-    max-width: 1200px;
+    top: 3vw;                          /* ย้ายขึ้นไปใกล้ขอบบนมากขึ้น */
+    width: 85%;                        /* ลดความกว้างลงนิดหน่อย */
+    max-width: 1000px;
     background: linear-gradient(135deg, #ffe066, #ffcc33, #ff9900);
-    border-radius: 50px;
-    border: 14px solid #ff6699;          /* ขอบชมพูสด แก้มไก่ */
-    box-shadow: 
-        0 0 50px rgba(255, 102, 153, 0.7),
-        inset 0 0 30px rgba(255, 255, 255, 0.6);
-    padding: 40px 50px;
+    border-radius: 40px;
+    border: 12px solid #ff6699;
+    box-shadow: 0 0 40px rgba(255, 102, 153, 0.6);
+    padding: 15px 25px;                /* ลด padding ให้ box เล็กลงมาก */
     animation: kawaiiBounce 1.4s ease-out forwards;
 }
 
@@ -77,15 +75,17 @@ html, body {
 
 /* รายละเอียดอื่น ๆ (game, viewers, etc.) */
 #details-container {
-    top: 36vw;
-    background: rgba(255, 204, 51, 0.85);  /* เหลืองอ่อนแบบแป้งทอด */
+    top: auto;                         /* ลบ top เดิม */
+    bottom: 4vw;                       /* วางติดขอบล่าง */
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 204, 51, 0.8);
     border: 8px solid #ff6699;
-    border-radius: 40px;
-    padding: 20px 40px;
-    margin: 0 auto;
+    border-radius: 35px;
+    padding: 15px 30px;
     width: auto;
-    max-width: 90%;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    max-width: 80%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     animation: fadeout 12s forwards;
 }
 
@@ -110,15 +110,15 @@ html, body {
 }
 
 /* คลิปวิดีโอ */
-video {
-    width: 80%;
-    max-width: 960px;
+#video {
+    width: 85%;
+    max-width: 1000px;
     height: auto;
-    max-height: 54vh;
+    max-height: 65vh;                  /* เพิ่มความสูงคลิปให้ใหญ่ขึ้น */
     border-radius: 40px;
-    border: 12px solid #ffffff;          /* ขอบขาวแบบขนมปังกรอบ */
+    border: 12px solid #ffffff;
     box-shadow: 0 15px 50px rgba(0,0,0,0.4);
-    margin: 30px auto 20px;
+    margin: 18vw auto 18vw;            /* เพิ่ม margin บนและล่างให้มากขึ้น เพื่อเว้นที่ text */
     display: block;
 }
 
