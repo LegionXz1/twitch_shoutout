@@ -34,7 +34,7 @@ html, body {
 
 /* ===== Video / Clip ===== */
 video {
-    width: 100%;
+    width: 80%;
     height: auto;
     border-radius: 14px;
     border: 1px solid var(--border);
