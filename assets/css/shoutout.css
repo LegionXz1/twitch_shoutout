@@ -1,4 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700&display=swap');
+/* ===============================
+   HIDE OVERLAY BY DEFAULT
+   =============================== */
+#container {
+    opacity: 0;
+    pointer-events: none;
+}
 
 html, body {
     margin: 0;
