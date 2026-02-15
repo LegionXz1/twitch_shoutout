@@ -1,16 +1,16 @@
 /* ===============================
-   GAMING MINIMAL SHOUTOUT THEME
+   DEAD BY DAYLIGHT – MINIMAL HUD
    =============================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700&display=swap');
 
 :root {
-    --bg-dark: rgba(15, 15, 20, 0.92);
-    --accent: #8b5cf6;      /* ม่วงเกม */
-    --accent-soft: #22d3ee; /* ฟ้า HUD */
-    --text-main: #ffffff;
-    --text-sub: #cbd5f5;
-    --border: rgba(139,92,246,0.6);
+    --bg-dark: rgba(10, 10, 10, 0.92);
+    --accent-blood: #b91c1c;   /* แดงเลือด */
+    --accent-dim: #6b0f0f;
+    --text-main: #f5f5f5;
+    --text-sub: #bdbdbd;
+    --border-fog: rgba(255,255,255,0.15);
 }
 
 html, body {
@@ -21,133 +21,142 @@ html, body {
     font-family: 'Kanit', sans-serif;
 }
 
-.hide { display: none; }
-.img-fluid { max-width: 100%; height: auto; }
-.text-center { text-align: center; }
-
-/* ===== Container ===== */
-#container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-/* ===== Video / Clip ===== */
+/* ===============================
+   VIDEO / CLIP
+   =============================== */
 video {
     width: 100%;
     height: auto;
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    box-shadow: 0 0 25px rgba(139,92,246,0.25);
+    border-radius: 10px;
+    filter: grayscale(15%) contrast(105%);
+    border: 1px solid var(--border-fog);
 }
 
-/* ===== Title (SHOUTOUT NAME) ===== */
+/* ===============================
+   TITLE (CHANNEL NAME)
+   =============================== */
 #text-container {
     position: absolute;
-    top: 8%;
+    top: 7%;
     width: 100%;
 }
 
 .title-text {
-    font-size: 4.2vw;
+    font-size: 4vw;
     font-weight: 700;
     color: var(--text-main);
-    letter-spacing: 0.08em;
+    letter-spacing: 0.25em;
     text-transform: uppercase;
-    text-shadow: 0 0 14px rgba(139,92,246,0.6);
+
+    /* เงาแข็งแบบเกม */
+    text-shadow:
+        0 0 12px rgba(185,28,28,0.6),
+        0 0 2px #000;
 }
 
-/* ===== Profile ===== */
+/* ===============================
+   PROFILE IMAGE
+   =============================== */
 #profile {
-    width: 7vw;
-    height: 7vw;
+    width: 6.5vw;
+    height: 6.5vw;
     border-radius: 50%;
-    border: 2px solid var(--accent);
-    box-shadow: 0 0 16px rgba(34,211,238,0.5);
+    border: 2px solid var(--accent-blood);
+    filter: grayscale(40%);
 }
 
-/* ===== Details Box ===== */
+/* ===============================
+   DETAILS BOX (HUD)
+   =============================== */
 #details-container {
     position: absolute;
-    bottom: 8%;
+    bottom: 7%;
     left: 50%;
     transform: translateX(-50%);
-    
-    background: var(--bg-dark);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    
-    padding: 18px 26px;
-    min-width: 60%;
-    
-    animation: hudIn 0.6s ease-out,
-               hudOut 10s forwards;
+
+    background: linear-gradient(
+        180deg,
+        rgba(20,20,20,0.95),
+        rgba(5,5,5,0.95)
+    );
+
+    border-left: 3px solid var(--accent-blood);
+    border-radius: 6px;
+
+    padding: 18px 28px;
+    min-width: 62%;
+
+    animation: fadeInDBD 0.6s ease-out,
+               fadeOutDBD 10s forwards;
 }
 
-/* HUD line */
-#details-container::before {
+/* เส้นแตกแบบ Entity */
+#details-container::after {
     content: '';
     position: absolute;
+    left: -3px;
     top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
+    width: 3px;
+    height: 100%;
     background: linear-gradient(
-        90deg,
+        180deg,
         transparent,
-        var(--accent),
-        var(--accent-soft),
+        var(--accent-blood),
         transparent
     );
 }
 
-/* ===== Text inside ===== */
+/* ===============================
+   TEXT
+   =============================== */
 #details-container .details-text {
     color: var(--text-sub);
-    font-size: 1.8vw;
-    line-height: 1.4;
+    font-size: 1.6vw;
+    line-height: 1.45;
 }
 
-/* Username / Channel */
+/* CHANNEL NAME */
 #details-container .details-text.item-0 {
-    font-size: 2.4vw;
+    font-size: 2.3vw;
     font-weight: 700;
     color: var(--text-main);
-    letter-spacing: 0.05em;
+    letter-spacing: 0.12em;
 }
 
-/* Game / Status */
+/* GAME / STATUS */
 #details-container .details-text.item-1 {
-    font-size: 1.9vw;
-    color: var(--accent-soft);
+    font-size: 1.8vw;
+    color: var(--accent-blood);
 }
 
-/* Description */
+/* DESCRIPTION */
 #details-container .details-text.item-2 {
-    font-size: 1.6vw;
+    font-size: 1.5vw;
 }
 
-/* Small info */
+/* SMALL INFO */
 #details-container .details-text.item-3 {
-    font-size: 1.3vw;
-    opacity: 0.75;
+    font-size: 1.2vw;
+    opacity: 0.7;
 }
 
-/* ===== Animations ===== */
-@keyframes hudIn {
-    0% {
+/* ===============================
+   ANIMATIONS
+   =============================== */
+@keyframes fadeInDBD {
+    from {
         opacity: 0;
-        transform: translate(-50%, 20px);
+        transform: translate(-50%, 25px);
     }
-    100% {
+    to {
         opacity: 1;
         transform: translate(-50%, 0);
     }
 }
 
-@keyframes hudOut {
+@keyframes fadeOutDBD {
     0%   { opacity: 1; }
-    90%  { opacity: 1; }
+    85%  { opacity: 1; }
     100% {
         opacity: 0;
         transform: translate(-50%, 20px);
