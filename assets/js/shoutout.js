@@ -187,3 +187,29 @@ function getClips(channel) {
 window.triggerShoutout = function(channel) {
     getClips(channel);
 };
+/* ===============================
+   TMI.JS LISTENER (!so)
+   =============================== */
+const channelParam = params.get("channel");
+
+if (channelParam && window.tmi) {
+    const client = new tmi.Client({
+        channels: [channelParam]
+    });
+
+    client.connect();
+
+    client.on("message", (channel, tags, message, self) => {
+        if (self) return;
+
+        if (message.toLowerCase().startsWith("!so")) {
+            const parts = message.split(" ");
+            const target = parts[1]
+                ? parts[1].replace("@", "")
+                : channelParam;
+
+            console.log("TRIGGER SHOUTOUT:", target);
+            getClips(target);
+        }
+    });
+}
