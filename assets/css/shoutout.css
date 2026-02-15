@@ -1,8 +1,9 @@
+/* =====================================
+   DBD FLEET NIGHT – FINAL OVERLAY
+   ===================================== */
+
 @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700&display=swap');
 
-/* ===============================
-   GLOBAL
-   =============================== */
 html, body {
     margin: 0;
     padding: 0;
@@ -12,150 +13,129 @@ html, body {
 }
 
 /* ===============================
-   CONTAINER (DO NOT HIDE!)
+   BASE CONTAINER
    =============================== */
 #container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/* ===============================
+   CLIP – CENTERED
+   =============================== */
+#clip {
+    display: block;
+    width: 72%;
+    max-width: 1120px;
+    margin: 6% auto 0;
 
-    background: rgba(9, 9, 11, 0.88);
-    padding: 22px 24px 24px;
-    border-radius: 14px;
-    border: 2px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    border: 2px solid rgba(255,255,255,0.15);
 
     box-shadow:
-        0 0 35px rgba(0,0,0,0.85),
-        0 0 90px rgba(0,0,0,1);
+        0 0 60px rgba(0,0,0,0.95),
+        inset 0 0 40px rgba(0,0,0,0.9);
 
-    z-index: 5;
+    filter: grayscale(30%) contrast(115%) brightness(90%);
+    z-index: 2;
 }
 
 /* ===============================
-   DEFAULT HIDDEN (JS CONTROLS THIS)
-   =============================== */
-#clip,
-#text-container,
-#details-container {
-    display: none;
-}
-
-/* ===============================
-   TITLE
+   TITLE (TOP)
    =============================== */
 #text-container {
-    margin-bottom: 14px;
+    position: absolute;
+    top: 3%;
+    width: 100%;
     text-align: center;
     z-index: 6;
 }
 
 .title-text {
-    font-size: 3.6vw;
+    font-size: 3.8vw;
     font-weight: 700;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.25em;
     text-transform: uppercase;
-    color: #f2f2f2;
 
+    color: #e5e5e5;
     text-shadow:
-        0 0 10px rgba(0,0,0,0.9),
+        0 0 12px rgba(0,0,0,0.9),
         0 0 3px rgba(255,255,255,0.15);
 }
 
 /* ===============================
-   CLIP (SAFE FOR VIDEO RENDER)
-   =============================== */
-#clip {
-    display: block;              /* JS will toggle */
-    width: 860px;
-    max-width: 88vw;
-    height: auto;
-
-    min-height: 360px;           /* 🔥 สำคัญ: กัน video 0px */
-
-    border-radius: 12px;
-    border: 2px solid rgba(255,255,255,0.18);
-
-    box-shadow:
-        0 0 40px rgba(0,0,0,0.9),
-        inset 0 0 25px rgba(0,0,0,0.8);
-
-    filter: grayscale(22%) contrast(115%) brightness(92%);
-    z-index: 5;
-}
-
-/* ===============================
-   DETAILS PANEL
+   DETAILS PANEL (IF ENABLED)
    =============================== */
 #details-container {
-    margin-top: 14px;
-    width: 100%;
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
 
-    background: rgba(12,12,14,0.94);
-    border-top: 2px solid rgba(255,255,255,0.15);
-    border-radius: 6px;
+    background: rgba(5,5,5,0.92);
+    border-left: 3px solid rgba(255,255,255,0.25);
+    border-radius: 4px;
 
-    padding: 14px 18px;
-    box-shadow: 0 0 18px rgba(0,0,0,0.8);
+    padding: 16px 24px;
+    min-width: 55%;
+
+    box-shadow:
+        0 0 35px rgba(0,0,0,0.95),
+        inset 0 0 25px rgba(0,0,0,0.8);
 
     z-index: 6;
 }
 
 .details-text {
-    color: #d6d6d6;
-    font-size: 1.45vw;
+    color: #cfcfcf;
+    font-size: 1.5vw;
     line-height: 1.4;
 }
 
 .details-text.item-0 {
-    font-size: 1.95vw;
+    font-size: 2.1vw;
     font-weight: 700;
-    color: #f0f0f0;
-    letter-spacing: 0.08em;
+    color: #f5f5f5;
+    letter-spacing: 0.12em;
 }
 
 /* ===============================
-   FOG EFFECT (CARD ONLY)
+   FOG EFFECT
    =============================== */
 #container::before {
     content: '';
     position: absolute;
-    inset: -14%;
-    border-radius: 18px;
-
+    inset: -10%;
     background:
-        radial-gradient(circle at 30% 40%, rgba(255,255,255,0.05), transparent 60%),
-        radial-gradient(circle at 70% 60%, rgba(255,255,255,0.03), transparent 65%);
-
+        radial-gradient(circle at 30% 40%, rgba(255,255,255,0.06), transparent 60%),
+        radial-gradient(circle at 70% 60%, rgba(255,255,255,0.04), transparent 65%);
     animation: fogMove 18s linear infinite;
     pointer-events: none;
-    z-index: 2;
+    z-index: 3;
 }
 
 @keyframes fogMove {
-    0%   { transform: translateX(-4%); }
-    50%  { transform: translateX(4%); }
-    100% { transform: translateX(-4%); }
+    0%   { transform: translateX(-5%); }
+    50%  { transform: translateX(5%); }
+    100% { transform: translateX(-5%); }
 }
 
 /* ===============================
-   BLOOD SPLATTER (SOFT)
+   BLOOD SPLATTER (ANIMATED)
    =============================== */
 #container::after {
     content: '';
     position: absolute;
-    top: -10%;
-    right: -8%;
-    width: 46%;
-    height: 46%;
+    top: 0;
+    right: 0;
+    width: 35%;
+    height: 35%;
 
     background:
-        radial-gradient(circle at 85% 18%, rgba(130,0,0,0.55), transparent 55%),
-        radial-gradient(circle at 92% 45%, rgba(85,0,0,0.38), transparent 60%);
+        radial-gradient(circle at 70% 20%, rgba(90,0,0,0.6), transparent 55%),
+        radial-gradient(circle at 90% 40%, rgba(120,0,0,0.45), transparent 60%),
+        radial-gradient(circle at 80% 60%, rgba(70,0,0,0.35), transparent 65%);
 
     animation: bloodPulse 6s ease-in-out infinite;
     pointer-events: none;
@@ -163,6 +143,23 @@ html, body {
 }
 
 @keyframes bloodPulse {
-    0%,100% { opacity: 0.35; }
-    50%     { opacity: 0.65; }
+    0%, 100% { opacity: 0.4; }
+    50%      { opacity: 0.7; }
+}
+
+/* ===============================
+   LOGO OVERLAY (SIDE)
+   =============================== */
+#dbd-logo {
+    position: absolute;
+    right: 2%;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.15;
+    z-index: 1;
+}
+
+#dbd-logo img {
+    width: 120px;
+    filter: grayscale(100%) contrast(120%);
 }
