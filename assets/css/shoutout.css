@@ -170,10 +170,9 @@ video {
     max-height: 65vh;
     border-radius: 40px;
     border: 12px solid #ffffff;
-    box-shadow: none !important;  /* ลบ shadow ที่อาจทำให้ glow แรงขึ้น */
-    filter: brightness(1.05) contrast(1.1) saturate(1.05) !important;  /* ทำให้สี crisp ลด bloom */
-    -webkit-filter: brightness(1.05) contrast(1.1) saturate(1.05) !important;
-    background: #000000;  /* พื้นหลังดำแน่นอน ป้องกัน transparent รั่ว */
+    box-shadow: 
+        0 15px 50px rgba(0,0,0,0.4),
+        0 0 30px rgba(255, 255, 255, 0.6);
     margin: 18vw auto 18vw;
     display: block;
 }
@@ -221,84 +220,7 @@ body::after {
     pointer-events: none;
     opacity: 0.35;
 }
-/* แอนิเมชันไก่ทอดลอยหลายตัว - เพิ่มความน่ารักและเคลื่อนไหว */
-.chicken-float {
-    position: absolute;
-    font-size: 3.5rem;          /* ขนาดไก่ (ปรับได้) */
-    opacity: 0.7;
-    pointer-events: none;
-    z-index: -1;                /* อยู่ด้านหลัง เพื่อไม่บังคลิป/ข้อความ */
-    user-select: none;
-}
 
-/* สร้างไก่หลายตัวด้วย pseudo-elements หลายชั้น */
-body::before,
-body::after,
-#container::before,
-#container::after {
-    content: "🍗";
-    @extend .chicken-float;
-}
-
-/* ไก่ตัวที่ 1 */
-body::before {
-    top: 15%;
-    left: 10%;
-    animation: floatChicken1 18s infinite linear;
-}
-
-/* ไก่ตัวที่ 2 */
-body::after {
-    top: 40%;
-    right: 15%;
-    animation: floatChicken2 22s infinite linear reverse;
-}
-
-/* ไก่ตัวที่ 3 */
-#container::before {
-    bottom: 20%;
-    left: 20%;
-    animation: floatChicken3 15s infinite ease-in-out;
-}
-
-/* ไก่ตัวที่ 4 */
-#container::after {
-    bottom: 35%;
-    right: 25%;
-    animation: floatChicken4 25s infinite ease-in-out reverse;
-}
-
-/* แอนิเมชันลอยแต่ละตัว (ตำแหน่งและความเร็วต่างกัน) */
-@keyframes floatChicken1 {
-    0%   { transform: translate(0, 0) rotate(0deg); opacity: 0.6; }
-    25%  { transform: translate(25vw, -10vh) rotate(45deg); opacity: 0.9; }
-    50%  { transform: translate(5vw, -20vh) rotate(90deg); opacity: 0.7; }
-    75%  { transform: translate(-15vw, 5vh) rotate(135deg); opacity: 0.8; }
-    100% { transform: translate(0, 0) rotate(180deg); opacity: 0.6; }
-}
-
-@keyframes floatChicken2 {
-    0%   { transform: translate(0, 0) rotate(0deg); opacity: 0.5; }
-    30%  { transform: translate(-20vw, 15vh) rotate(-60deg); opacity: 0.85; }
-    60%  { transform: translate(10vw, -25vh) rotate(-120deg); opacity: 0.65; }
-    90%  { transform: translate(30vw, 10vh) rotate(-180deg); opacity: 0.75; }
-    100% { transform: translate(0, 0) rotate(-240deg); opacity: 0.5; }
-}
-
-@keyframes floatChicken3 {
-    0%   { transform: translate(0, 0) scale(1); opacity: 0.7; }
-    40%  { transform: translate(18vw, -12vh) scale(1.2); opacity: 1; }
-    70%  { transform: translate(-10vw, 20vh) scale(0.9); opacity: 0.6; }
-    100% { transform: translate(0, 0) scale(1); opacity: 0.7; }
-}
-
-@keyframes floatChicken4 {
-    0%   { transform: translate(0, 0) rotate(0deg); opacity: 0.6; }
-    20%  { transform: translate(12vw, 25vh) rotate(30deg); opacity: 0.9; }
-    50%  { transform: translate(-25vw, -8vh) rotate(90deg); opacity: 0.7; }
-    80%  { transform: translate(8vw, 15vh) rotate(150deg); opacity: 0.8; }
-    100% { transform: translate(0, 0) rotate(180deg); opacity: 0.6; }
-}
 /* Animation เดิม */
 @keyframes fadeout {
     0%   { opacity: 1; }
