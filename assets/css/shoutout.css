@@ -175,8 +175,8 @@ html, body {
     right: 14px;
     bottom: 12px;
 
-    width: 100px;
-    height: 100px;
+    width: 96px;
+    height: 96px;
 
     background-image: url("https://raw.githubusercontent.com/LegionXz1/twitch_shoutout/main/assets/images/Love.png"); /* ← เปลี่ยน path */
     background-size: contain;
