@@ -91,14 +91,18 @@ $(document).ready(function () {
     };
 
     let getClips = function (SOChannel, callback) {
-        let urlC = apiServer + "/getuserclips.php?channel=" + SOChannel + "" + dateRange + "&random=true";
-        let xhrC = new XMLHttpRequest();
-        xhrC.open("GET", urlC);
-        xhrC.onreadystatechange = function () {
-            if (xhrC.readyState === 4) callback(JSON.parse(xhrC.responseText));
-        };
-        xhrC.send();
-    };
+		// เพิ่ม &first=20 เพื่อบังคับให้ API ส่งคลิปมา 20 อัน (สูงสุดที่ API นี้มักจะให้คือ 20-100)
+		let urlC = apiServer + "/getuserclips.php?channel=" + SOChannel + dateRange + "&random=true&first=20";
+		
+		console.log("กำลังเรียก API: " + urlC); 
+		
+		let xhrC = new XMLHttpRequest();
+		xhrC.open("GET", urlC);
+		xhrC.onreadystatechange = function () {
+			if (xhrC.readyState === 4) callback(JSON.parse(xhrC.responseText));
+		};
+		xhrC.send();
+	};
 
     let getClipUrl = function (id, callback) {
         let urlV = apiServer + "/getuserclips.php?id=" + id;
