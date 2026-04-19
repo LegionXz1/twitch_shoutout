@@ -21,7 +21,7 @@ $(document).ready(async function () {
         if (apiServerUrl) {
             serverArr = [apiServerUrl];
         } else {
-            serverArr = ["legionxapi-production.up.railway.app"];
+            serverArr = ["https://legionxapi-production.up.railway.app"];
         }
 
         // set the api gateway servers 
