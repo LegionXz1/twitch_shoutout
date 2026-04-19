@@ -21,7 +21,7 @@ $(document).ready(async function () {
         if (apiServerUrl) {
             serverArr = [apiServerUrl];
         } else {
-            serverArr = ["https://twitchapi.teklynk.com", "https://twitchapi.teklynk.dev", "https://twitchapi2.teklynk.dev"];
+            serverArr = ["legionxapi-production.up.railway.app"];
         }
 
         // set the api gateway servers 
